@@ -1,89 +1,44 @@
 
-* {
-  box-sizing: border-box;
+@import "tailwindcss";
+
+/* 1. Light theme design tokens */
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #0ea5e9;
+  --primary-contrast: #ffffff;
+  --border: #e2e8f0;
+  --radius: 0.75rem;
 }
 
+/* 2. Dark theme design tokens */
+[data-theme="dark"] {
+  --bg: #0b1220;
+  --surface: #131c2e;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --primary: #38bdf8;
+  --primary-contrast: #06202e;
+  --border: #243049;
+}
+
+/* 3. Connect design tokens with Tailwind CSS */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--text);
+  --color-muted: var(--muted);
+  --color-primary: var(--primary);
+  --color-primary-contrast: var(--primary-contrast);
+  --color-line: var(--border);
+
+  --radius-card: var(--radius);
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* 4. Global body styles */
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f9;
-  color: #222;
-}
-
-header {
-  background: #202c45;
-  padding: 18px;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-  gap: 22px;
-  flex-wrap: wrap;
-}
-
-nav a {
-  color: white;
-  text-decoration: none;
-}
-
-nav a.active {
-  color: #ffd166;
-  font-weight: bold;
-}
-
-button {
-  padding: 9px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-main {
-  max-width: 1000px;
-  margin: 30px auto;
-  padding: 20px;
-}
-
-section {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-}
-
-input {
-  padding: 12px;
-  width: 100%;
-  max-width: 400px;
-  margin: 10px 0;
-}
-
-.user-card {
-  padding: 15px;
-  margin: 12px 0;
-  background: #edf1f7;
-  border-radius: 8px;
-}
-
-.user-card a {
-  color: #1756a9;
-}
-
-html[data-theme="dark"] body {
-  background: #151923;
-  color: white;
-}
-
-html[data-theme="dark"] section {
-  background: #252d3b;
-}
-
-html[data-theme="dark"] .user-card {
-  background: #343e50;
-}
-
-html[data-theme="dark"] input {
-  background: #343e50;
-  color: white;
+  @apply bg-bg text-fg font-sans antialiased;
 }

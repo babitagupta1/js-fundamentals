@@ -43,13 +43,19 @@ export default function Users() {
 
       <p>Browser width: {width}px</p>
 
-      {filteredUsers.length > 0 ? (
-        filteredUsers.map((user) => (
-          <UserCard key={user.id} user={user} />
-        ))
-      ) : (
-        <p>No users found.</p>
-      )}
+      
+{filteredUsers.length > 0 ? (
+  <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {filteredUsers.map((user) => (
+      <li key={user.id}>
+        <UserCard user={user} />
+      </li>
+    ))}
+  </ul>
+) : (
+  <p className="text-muted">No users found.</p>
+)}
+
     </section>
   );
 }
