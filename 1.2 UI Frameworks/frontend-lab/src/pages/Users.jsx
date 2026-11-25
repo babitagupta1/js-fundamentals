@@ -11,22 +11,17 @@ import { useUsers } from '../hooks/useUsers.js';
 import { createUser } from '../api/users.js';
 
 export default function Users() {
-  // Zustand UI state
   const view = useUIStore((state) => state.view);
   const setView = useUIStore((state) => state.setView);
   const search = useUIStore((state) => state.search);
   const setSearch = useUIStore((state) => state.setSearch);
 
   const [width, setWidth] = useState(window.innerWidth);
-
-  // Create user form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  // Access TanStack Query cache
   const queryClient = useQueryClient();
 
-  // Fetch users
   const {
     data: users,
     isPending,
@@ -36,10 +31,8 @@ export default function Users() {
     isFetching,
   } = useUsers();
 
-  // Create user mutation
   const createUserMutation = useMutation({
     mutationFn: createUser,
-
     onSuccess: (newUser) => {
       queryClient.setQueryData(['users'], (oldUsers) => [
         ...(oldUsers ?? []),
@@ -51,40 +44,27 @@ export default function Users() {
     },
   });
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    createUserMutation.mutate({
-      name,
-      email,
-    });
+    createUserMutation.mutate({ name, email });
   };
 
-  // Track browser width
   useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
+    const handleResize = () => setWidth(window.innerWidth);
 
     window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Filter users
   const filteredUsers = (users ?? []).filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
   );
 
-  // Loading state
   if (isPending) {
     return <p role="status">Loading users...</p>;
   }
 
-  // Fetch error state
   if (isError) {
     return (
       <section>
@@ -92,11 +72,7 @@ export default function Users() {
           Failed to load users: {error.message}
         </p>
 
-        <button
-          type="button"
-          onClick={() => refetch()}
-          className="mt-3 rounded-card bg-primary px-4 py-2 text-primary-contrast"
-        >
+        <button type="button" onClick={() => refetch()}>
           Retry
         </button>
       </section>
@@ -107,7 +83,6 @@ export default function Users() {
     <section className="space-y-6">
       <h1 className="text-2xl font-bold">Users List</h1>
 
-      {/* Create User Form */}
       <form
         onSubmit={handleSubmit}
         className="space-y-3 rounded-card border border-line p-4"
@@ -153,7 +128,6 @@ export default function Users() {
         )}
       </form>
 
-      {/* Search using Zustand */}
       <input
         type="text"
         placeholder="Search users..."
@@ -162,16 +136,12 @@ export default function Users() {
         className="w-full rounded-card border border-line bg-surface p-3 text-fg"
       />
 
-      {/* Browser width */}
-      <p className="text-sm text-muted">
-        Browser width: {width}px
-      </p>
+      <p className="text-sm text-muted">Browser width: {width}px</p>
 
       {isFetching && (
         <p className="text-sm text-muted">Refreshing...</p>
       )}
 
-      {/* Grid and List buttons */}
       <div className="flex gap-3">
         <button
           type="button"
@@ -189,9 +159,9 @@ export default function Users() {
           List View
         </button>
       </div>
+
       <p>Current View: {view}</p>
 
-      {/* Users List */}
       {filteredUsers.length > 0 ? (
         <ul
           className={
